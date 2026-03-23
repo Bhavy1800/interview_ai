@@ -1,4 +1,4 @@
-const userMode = require("../models/user.model");
+const userModel = require("../models/user.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 /**
@@ -89,6 +89,16 @@ async function loginUserControlleter(req, res) {
     process.env.JWT_SECRET,
     { expiresIn: "1d" },
   );
+
+  res.cookie("token", token);
+  res.status(200).json({
+    message: "User logged in successfully",
+    user: {
+      id: user._id,
+      username: user.username,
+      email: user.email,
+    },
+  });
 }
 
-module.exports = { registerUserController };
+module.exports = { registerUserController, loginUserControlleter };
